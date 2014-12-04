@@ -60,7 +60,7 @@ class CurlResponse implements ResponseInterface
             $keyVal = explode(": ", $header);
             if ($keyVal[0] === $name) {
                 
-                return $keyVal[1];
+                return trim($keyVal[1], " \t\n\r\0\x0B");
             }
         }
         

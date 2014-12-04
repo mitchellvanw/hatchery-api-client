@@ -27,6 +27,7 @@ class Client {
 
     public function sendPayload(PayloadItem $payload) {
         $payload->setHeader('x-auth-token', $this->apiKey);
+        $payload->setHeader('Content-Type', 'application/json');
         /* @var $response \Hatchery\Connection\ResponseInterface */
         $response = $this->interface->sendPayload($payload);
         try {

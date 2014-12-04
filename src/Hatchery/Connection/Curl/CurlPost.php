@@ -16,8 +16,8 @@ class CurlPost implements TypeInterface
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         if ($payload->getMethod() === 'post') {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload->getPostData());
+            curl_setopt($ch, CURLOPT_POST, 1);            
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload->getPostData()));
         }
 
         $headers = $payload->getHeaders();
