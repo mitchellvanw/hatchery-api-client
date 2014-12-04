@@ -11,12 +11,14 @@ class CurlPost implements TypeInterface
     public function sendPayload(Payload $payload)
     {
         $ch = curl_init($payload->getUrl());
-        curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_HEADER, 0);  // DO NOT RETURN HTTP HEADERS
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);  // RETURN THE CONTENTS OF THE CALL
+        curl_setopt($ch, CURLOPT_HEADER, 1); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $payload->getPostData());
+        if ($payload->getMethod() === 'post') {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload->getPostData());
+        }
 
         $headers = $payload->getHeaders();
         if (!empty($headers)) {
@@ -28,8 +30,12 @@ class CurlPost implements TypeInterface
         }
 
         $content = curl_exec($ch);
-
-        return new CurlResponse(curl_getinfo($ch, CURLINFO_HTTP_CODE), $content);
+        
+        $header_size    = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $retHeaders     = substr($content, 0, $header_size);
+        $body           = substr($content, $header_size);
+        
+        return new CurlResponse(curl_getinfo($ch, CURLINFO_HTTP_CODE), $retHeaders, $body);
     }
 
 

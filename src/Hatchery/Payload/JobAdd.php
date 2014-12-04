@@ -11,7 +11,10 @@ class JobAdd extends Payload
         $this->setPostData('preset', $preset);
         $this->setPostData('input', $ftpIn);
         $this->setPostData('output', $ftpOut);
-
+        
+        if (isset($options['transcode_options'])) {
+            $this->setPostData('transcode_options', $options['transcode_options']);
+        }
     }
 
 }

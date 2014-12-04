@@ -14,4 +14,6 @@ interface ResponseInterface
     public function getContent();
 
     public function getJsonResponse();
+    
+    public function getLocation();
 }

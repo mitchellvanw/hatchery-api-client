@@ -8,6 +8,7 @@ class Payload
     protected $data = array();
     protected $headers = array();
     protected $url;
+    protected $method = 'post';
 
     public function __construct($url)
     {
@@ -46,7 +47,16 @@ class Payload
     {
         return $this->data;
     }
+    
+    public function setMethod($method) {
 
-  
+        $this->method = $method;
+        return $this;
+    }
+
+    public function getMethod() {
+
+        return $this->method;
+    }
 
 }

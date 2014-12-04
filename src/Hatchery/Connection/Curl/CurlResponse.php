@@ -8,13 +8,15 @@ class CurlResponse implements ResponseInterface
 {
 
     private $content;
+    private $headers;
     private $statusCode;
 
-    public function __construct($statusCode, $content)
+    public function __construct($statusCode, $headers, $content)
     {
         $this->statusCode = $statusCode;
+        $this->headers    = $headers;
         $this->content    = $content;
-    }
+    }  
 
     public function getContent()
     {
@@ -38,7 +40,31 @@ class CurlResponse implements ResponseInterface
 
     public function getJsonResponse()
     {
-        return json_decode($this->content);
+        return json_decode($this->content, true);
+    }
+
+    public function getLocation() {
+
+        return $this->getHeaderByName('Location');
+    }
+
+    public function getHeaderByName($name) {
+        $headers = explode("\n", $this->headers);
+        
+        foreach ($headers as $header) {
+            
+            if (empty($header)) {
+                
+                continue;
+            }
+            $keyVal = explode(": ", $header);
+            if ($keyVal[0] === $name) {
+                
+                return $keyVal[1];
+            }
+        }
+        
+        return false;
     }
 
 }
