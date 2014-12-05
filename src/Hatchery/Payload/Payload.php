@@ -58,5 +58,36 @@ class Payload
 
         return $this->method;
     }
+    
+    /**
+     * Helper function to set offset and duration parameters
+     * returns false when parameters are not numeric, or duration is less than or equal to 0
+     * @param type $offset
+     * @param type $duration
+     * @return boolean
+     */
+    public function setOffsetAndDuration($offset, $duration) {
+        if(!is_numeric($offset) || !is_numeric($duration)){
+            
+            return false;
+        }
+        
+        if($duration <= 0){
+            
+            return false;
+        }
+
+        $transcodeOptions = array();
+        
+        $transcodeOptions[] = array(
+            'type' => 'seek',
+            'value' => $offset
+        );
+        $transcodeOptions[] = array(
+            'type' => 'seek-offset',
+            'value' => $duration
+        );
+        $this->setPostData('transcode_options', $transcodeOptions);
+    }
 
 }

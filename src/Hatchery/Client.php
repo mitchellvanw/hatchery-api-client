@@ -17,8 +17,8 @@ class Client {
         $this->interface = new CurlPost();
     }
 
-    public function createJobAddPayload($preset, $ftpIn, $ftpOut, $options = array()) {
-        return new Payload\JobAdd($this->baseLink . '/api/jobs/', $preset, $ftpIn, $ftpOut, $options);
+    public function createJobAddPayload($preset, $ftpIn, $ftpOut) {
+        return new Payload\JobAdd($this->baseLink . '/api/jobs/', $preset, $ftpIn, $ftpOut);
     }
 
     public function createJobStatusPayload($identifier) {
