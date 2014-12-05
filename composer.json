@@ -1,5 +1,5 @@
 {
-    "name": "IssetBV/hatchery-api-client",
+    "name": "issetbv/hatchery-api-client",
     "type": "library",
     "description": "Hatchery API client for PHP",
     "authors": [
