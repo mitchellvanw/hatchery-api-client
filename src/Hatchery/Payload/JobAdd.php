@@ -5,88 +5,68 @@ namespace Hatchery\Payload;
 class JobAdd extends Payload
 {
 
-    public function __construct($url, $preset, $ftpIn, $ftpOut, $stills = 0, $duration = 0)
+    public function __construct($url, $preset, $ftpIn, $ftpOut)
     {
         parent::__construct($url);
 
         $files = [];
         $tasks = [];
 
-        //create acquire
+        //create acquire file ref
         $acquireFileRef = $this->uuid();
+        //create acquire task ref
         $acquireTaskRef = $this->uuid();
         //add input file
         $files[] = ['id' => $acquireFileRef, 'url' => $ftpIn];
         //add task
-        $acquireTask = Object();
-        $acquireTask->id = $acquireTaskRef;
-        $acquireTask->type = 'acquire';
-        $file = Object();
-        $file->ref = $acquireTaskRef;
-        $acquireTask->file = $file;
-
+        $acquireTask['id'] = $acquireTaskRef;
+        $acquireTask['type'] = 'acquire';
+        //add file reference
+        $file['ref'] = $acquireFileRef;
+        $acquireTask['file']  = $file;
+        //add task to tasks
         $tasks[] = $acquireTask;
 
-
-        $transcodeTaskRef = $this->uuid();
-        $transcodeTask = Object();
-        $transcodeTask->id = $transcodeTaskRef;
-        $transcodeTask->type = 'transcode';
-        $transcodeTask->depends_on = $acquireTaskRef;
-
-        $actions =  [];
-        $action = Object();
-        $action->actionType  = 'video-transcode';
-        $action->preset = $preset;
-        $action->options = [];
-
-        $files = [];
-        $file = Object();
-        $file->file_requirement_id = 2;
-        $file->ref = $acquireFileRef;
-
-
-        //create transcode
-
-
-
-
-
-
+        //create publish file ref
         $publishFileRef = $this->uuid();
+        //create publish task ref
         $publishTaskRef = $this->uuid();
         //add output file
         $files[] = ['id' => $publishFileRef, 'url' => $ftpOut];
-        $publishTask = Object();
-        $publishTask->id = $publishTaskRef;
-        $acquireTask->type = 'publish';
-        $file = Object();
-        $file->ref = $acquireTaskRef;
-        $acquireTask->file = $file;
+        //add task
+        $publishTask['id'] = $publishTaskRef;
+        $publishTask['type'] = 'publish';
+        //add file reference
+        $file['ref'] = $publishFileRef;
+        $publishTask['file'] = $file;
+        //add task to tasks
+        $tasks[] = $publishTask;
+
+        $transcodeTaskRef = $this->uuid();
+        $transcodeTask['id'] = $transcodeTaskRef;
+        $transcodeTask['type'] = 'transcode';
+        $transcodeTask['depends_on'][] = $acquireTaskRef;
+
+        $action['actionType']  = 'video-transcode';
+        $action['preset'] = $preset;
+        $action['options'] = [];
+
+        $filesRequirements = [];
+        $filesRequirements[] = ['file_requirement_id' => 2, 'ref' => $acquireFileRef];
+        $filesRequirements[] = ['file_requirement_id' => 1, 'ref' => $publishFileRef];
+
+        $action['files'] = $filesRequirements;
+
+        $transcodeTask['actions'][] = $action;
+        $publishTask['depends_on'][] = $transcodeTaskRef;
+
+        $tasks[] = $transcodeTask;
+        $job = [];
+        $job['tasks'] = $tasks;
 
 
-
-        $job = Object();
-
-
-        for($i = 0; i < $stills; $i++){
-
-            $stillOffset = $duration / $stills + 2;
-
-            $files[] = ['id' => $this->uuid(), 'url' => $this->replace_extension($ftpOut, 'png')];
-
-
-        }
-
-        $job->tasks = $tasks;
-
-        $this->setPostData('preset', $preset);
-        $this->setPostData('input', $ftpIn);
-        $this->setPostData('output', $ftpOut);
-    }
-
-    function replace_extension($filename, $new_extension) {
-        return preg_replace('/\..+$/', '.' . $new_extension, $filename);
+        $this->setPostData('job', $job);
+        $this->setPostData('files', $files);
     }
 
     function uuid() {

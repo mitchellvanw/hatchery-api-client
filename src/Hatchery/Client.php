@@ -18,7 +18,7 @@ class Client {
     }
 
     public function createJobAddPayload($preset, $ftpIn, $ftpOut) {
-        return new Payload\JobAdd($this->baseLink . '/api/jobs/', $preset, $ftpIn, $ftpOut);
+        return new Payload\JobAdd($this->baseLink . '/api/v2/jobs/', $preset, $ftpIn, $ftpOut);
     }
 
     public function createJobStatusPayload($identifier) {
@@ -36,6 +36,7 @@ class Client {
                 
                 return $response;
             } else {
+
                 $ex = new Connection\ResponseException(sprintf('[%s]: Send failed', $response->getStatusCode()));
                 $ex->setResponse($response);
                 throw $ex;
