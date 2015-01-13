@@ -17,7 +17,7 @@ class JobAdd extends Payload
         //create acquire task ref
         $acquireTaskRef = $this->uuid();
         //add input file
-        $files[] = ['id' => $acquireFileRef, 'url' => $ftpIn];
+        $files[] = array('id' => $acquireFileRef, 'url' => $ftpIn);
         //add task
         $acquireTask['id'] = $acquireTaskRef;
         $acquireTask['type'] = 'acquire';
@@ -32,7 +32,7 @@ class JobAdd extends Payload
         //create publish task ref
         $publishTaskRef = $this->uuid();
         //add output file
-        $files[] = ['id' => $publishFileRef, 'url' => $ftpOut];
+        $files[] = array('id' => $publishFileRef, 'url' => $ftpOut);
         //add task
         $publishTask['id'] = $publishTaskRef;
         $publishTask['type'] = 'publish';
@@ -50,8 +50,8 @@ class JobAdd extends Payload
         $action['options']= array();
 
         $filesRequirements= array();
-        $filesRequirements[] = ['file_requirement_id' => 2, 'ref' => $acquireFileRef];
-        $filesRequirements[] = ['file_requirement_id' => 1, 'ref' => $publishFileRef];
+        $filesRequirements[] = array('file_requirement_id' => 2, 'ref' => $acquireFileRef);
+        $filesRequirements[] = array('file_requirement_id' => 1, 'ref' => $publishFileRef);
 
         $action['files'] = $filesRequirements;
 

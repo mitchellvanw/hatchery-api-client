@@ -83,9 +83,9 @@ class Payload
         $postData = $this->getPostData();
 
         $options= array();
-        $options[] = ['name' => 'video-transcode.output-video.duration', 'value' => $duration];
-        $options[] = ['name' => 'video-transcode.input-video.video-seek-offset', 'value' => 'offset-seconds'];
-        $options[] = ['name' => 'video-transcode.input-video.video-seek-offset[offset-seconds].seek-offset-seconds', 'value' => $offset];
+        $options[] = array('name' => 'video-transcode.output-video.duration', 'value' => $duration);
+        $options[] = array('name' => 'video-transcode.input-video.video-seek-offset', 'value' => 'offset-seconds');
+        $options[] = array('name' => 'video-transcode.input-video.video-seek-offset[offset-seconds].seek-offset-seconds', 'value' => $offset);
 
         $job = $postData['job'];
         foreach ($job['tasks'] as &$task) {
@@ -140,12 +140,12 @@ class Payload
             $action= array();
             $action['actionType'] = 'generate-still';
             $action['preset'] = 'Default Still Preset';
-            $action['options'][] = ['name' => 'generate-still.input-video.still-seek-offset', 'value' => 'offset-seconds'];
-            $action['options'][] = ['name' => 'generate-still.input-video.still-seek-offset[offset-seconds].seek-offset-seconds', 'value' => $currentOffset];
+            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset', 'value' => 'offset-seconds');
+            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset[offset-seconds].seek-offset-seconds', 'value' => $currentOffset);
 
             $filesRequirements= array();
-            $filesRequirements[] = ['file_requirement_id' => 3, 'ref' => $files[0]['id']];
-            $filesRequirements[] = ['file_requirement_id' => 4, 'ref' => $publishFileRef];
+            $filesRequirements[] = array('file_requirement_id' => 3, 'ref' => $files[0]['id']);
+            $filesRequirements[] = array('file_requirement_id' => 4, 'ref' => $publishFileRef);
 
             $action['files'] = $filesRequirements;
 
