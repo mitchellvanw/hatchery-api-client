@@ -39,8 +39,6 @@ class JobAdd extends Payload
         //add file reference
         $file['ref'] = $publishFileRef;
         $publishTask['file'] = $file;
-        //add task to tasks
-        $tasks[] = $publishTask;
 
         $transcodeTaskRef = $this->uuid();
         $transcodeTask['id'] = $transcodeTaskRef;
@@ -60,6 +58,7 @@ class JobAdd extends Payload
         $transcodeTask['actions'][] = $action;
         $publishTask['depends_on'][] = $transcodeTaskRef;
 
+        $tasks[] = $publishTask;
         $tasks[] = $transcodeTask;
         $job = [];
         $job['tasks'] = $tasks;
