@@ -9,8 +9,8 @@ class JobAdd extends Payload
     {
         parent::__construct($url);
 
-        $files = [];
-        $tasks = [];
+        $files= array();
+        $tasks= array();
 
         //create acquire file ref
         $acquireFileRef = $this->uuid();
@@ -47,9 +47,9 @@ class JobAdd extends Payload
 
         $action['actionType']  = 'video-transcode';
         $action['preset'] = $preset;
-        $action['options'] = [];
+        $action['options']= array();
 
-        $filesRequirements = [];
+        $filesRequirements= array();
         $filesRequirements[] = ['file_requirement_id' => 2, 'ref' => $acquireFileRef];
         $filesRequirements[] = ['file_requirement_id' => 1, 'ref' => $publishFileRef];
 
@@ -60,7 +60,7 @@ class JobAdd extends Payload
 
         $tasks[] = $publishTask;
         $tasks[] = $transcodeTask;
-        $job = [];
+        $job= array();
         $job['tasks'] = $tasks;
 
 
