@@ -18,7 +18,7 @@ class Client {
     }
 
     public function createJobAddPayload($preset, $ftpIn, $ftpOut) {
-        return new Payload\JobAdd($this->baseLink . '/api/v2/jobs/', $preset, $ftpIn, $ftpOut);
+        return new Payload\JobAdd($this->baseLink . '/api/jobs/', $preset, $ftpIn, $ftpOut);
     }
 
     public function createJobStatusPayload($identifier) {
