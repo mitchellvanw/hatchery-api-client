@@ -134,8 +134,6 @@ class Payload
             //add file reference
             $file['ref'] = $publishFileRef;
             $publishTask['file'] = $file;
-            //add task to tasks
-            $job['tasks'][] = $publishTask;
 
             $action= array();
             $action['actionType'] = 'generate-still';
@@ -152,8 +150,13 @@ class Payload
             foreach ($job['tasks'] as &$task) {
                 if ($task['type'] === 'transcode') {
                     $task['actions'][] = $action;
+
+                    $publishTask['depends_on'][] = $task['id'];
                 }
             }
+
+            //add task to tasks
+            $job['tasks'][] = $publishTask;
         }
 
         $this->setPostData('files', $files);
