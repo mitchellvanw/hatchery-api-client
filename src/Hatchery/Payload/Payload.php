@@ -122,6 +122,8 @@ class Payload
             $currentOffset += $offsetPerStill;
             $stillFilename = str_replace('.' . pathinfo(parse_url($filename, PHP_URL_PATH), PATHINFO_EXTENSION), '_' . $i . '.png', $filename);
 
+            $publishTask = array();
+
             //create publish file ref
             $publishFileRef = $this->uuid();
             //create publish ta sk ref
