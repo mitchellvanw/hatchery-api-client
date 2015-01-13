@@ -127,7 +127,7 @@ class Payload
             //create publish ta sk ref
             $publishTaskRef = $this->uuid();
             //add output file
-            $files[] = ['id' => $publishFileRef, 'url' => $stillFilename];
+            $files[] = array('id' => $publishFileRef, 'url' => $stillFilename);
             //add task
             $publishTask['id'] = $publishTaskRef;
             $publishTask['type'] = 'publish';

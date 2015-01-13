@@ -37,7 +37,7 @@ class Client {
                 return $response;
             } else {
 
-                $ex = new Connection\ResponseException(sprintf('[%s]: Send failed', $response->getStatusCode()));
+                $ex = new Connection\ResponseException(sprintf('[%s]: Send failed: [%s]', $response->getStatusCode(), $response->getContent()));
                 $ex->setResponse($response);
                 throw $ex;
             }
