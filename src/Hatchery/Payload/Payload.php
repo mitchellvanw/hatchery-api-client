@@ -152,8 +152,6 @@ class Payload
             foreach ($job['tasks'] as &$task) {
                 if ($task['type'] === 'transcode') {
                     $task['actions'][] = $action;
-
-                    $publishTask['depends_on'][] = $task['id'];
                 }
             }
 

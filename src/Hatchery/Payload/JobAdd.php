@@ -50,13 +50,12 @@ class JobAdd extends Payload
         $action['options']= array();
 
         $filesRequirements= array();
-        $filesRequirements[] = array('file_requirement_id' => 2, 'ref' => $acquireFileRef);
-        $filesRequirements[] = array('file_requirement_id' => 1, 'ref' => $publishFileRef);
+        $filesRequirements[] = array('file_requirement_id' => 1, 'ref' => $acquireFileRef);
+        $filesRequirements[] = array('file_requirement_id' => 2, 'ref' => $publishFileRef);
 
         $action['files'] = $filesRequirements;
 
         $transcodeTask['actions'][] = $action;
-        $publishTask['depends_on'][] = $transcodeTaskRef;
 
         $tasks[] = $publishTask;
         $tasks[] = $transcodeTask;
