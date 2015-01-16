@@ -99,13 +99,15 @@ class Payload
         }
 
         $this->setPostData('job', $job);
+
+        return true;
     }
 
     /**
-     * Add stills
      * @param $filename
      * @param $duration
      * @param $stills
+     * @return array
      */
     public function addStills($filename, $duration, $stills)
     {
@@ -113,21 +115,23 @@ class Payload
         $currentOffset = 0;
 
         $postData = $this->getPostData();
-
         $files = $postData['files'];
         $job = $postData['job'];
 
+        $fileNames = array();
 
         for ($i = 0; $i < $stills; $i++) {
             $currentOffset += $offsetPerStill;
             $stillFilename = str_replace('.' . pathinfo(parse_url($filename, PHP_URL_PATH), PATHINFO_EXTENSION), '_' . $i . '.png', $filename);
 
+            $fileNames[] = $stillFilename;
+
             $publishTask = array();
 
             //create publish file ref
-            $publishFileRef = $this->uuid();
+            $publishFileRef = JobAdd::uuid();
             //create publish ta sk ref
-            $publishTaskRef = $this->uuid();
+            $publishTaskRef = JobAdd::uuid();
             //add output file
             $files[] = array('id' => $publishFileRef, 'url' => $stillFilename);
             //add task
@@ -140,8 +144,8 @@ class Payload
             $action= array();
             $action['actionType'] = 'generate-still';
             $action['preset'] = 'Default Still Preset';
-            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset', 'value' => 'offset-seconds');
-            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset[offset-seconds].seek-offset-seconds', 'value' => $currentOffset);
+            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset', 'value' => 'percentage');
+            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset[percentage].percentage', 'value' => 10 + ($currentOffset * 20));
 
             $filesRequirements= array();
             $filesRequirements[] = array('file_requirement_id' => 3, 'ref' => $files[0]['id']);
@@ -162,6 +166,7 @@ class Payload
         $this->setPostData('files', $files);
         $this->setPostData('job', $job);
 
+        return $fileNames;
     }
 
 }
