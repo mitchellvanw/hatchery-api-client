@@ -111,21 +111,15 @@ class Payload
      */
     public function addStills($filename, $duration, $stills)
     {
-        $offsetPerStill = $duration / $stills;
-        $currentOffset = 0;
-
         $postData = $this->getPostData();
         $files = $postData['files'];
         $job = $postData['job'];
-
         $fileNames = array();
 
         for ($i = 0; $i < $stills; $i++) {
-            $currentOffset += $offsetPerStill;
+
             $stillFilename = str_replace('.' . pathinfo(parse_url($filename, PHP_URL_PATH), PATHINFO_EXTENSION), '_' . $i . '.png', $filename);
-
             $fileNames[] = $stillFilename;
-
             $publishTask = array();
 
             //create publish file ref
@@ -145,7 +139,7 @@ class Payload
             $action['actionType'] = 'generate-still';
             $action['preset'] = 'Default Still Preset';
             $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset', 'value' => 'percentage');
-            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset[percentage].percentage', 'value' => 10 + ($currentOffset * 20));
+            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset[percentage].percentage', 'value' => 10 + ($i * 20));
 
             $filesRequirements= array();
             $filesRequirements[] = array('file_requirement_id' => 3, 'ref' => $files[0]['id']);
