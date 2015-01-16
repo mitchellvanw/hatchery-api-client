@@ -118,7 +118,7 @@ class Payload
 
         for ($i = 0; $i < $stills; $i++) {
 
-            $stillFilename = str_replace('.' . pathinfo(parse_url($filename, PHP_URL_PATH), PATHINFO_EXTENSION), '_' . $i . '.png', $filename);
+            $stillFilename = str_replace('.' . pathinfo(parse_url($filename, PHP_URL_PATH), PATHINFO_EXTENSION), '_' . $i . '.jpg', $filename);
             $fileNames[] = $stillFilename;
             $publishTask = array();
 
