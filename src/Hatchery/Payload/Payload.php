@@ -84,8 +84,8 @@ class Payload
 
         $options= array();
         $options[] = array('name' => 'video-transcode.output-video.duration', 'value' => $duration);
-        $options[] = array('name' => 'video-transcode.input-video.video-seek-offset', 'value' => 'offset-seconds');
-        $options[] = array('name' => 'video-transcode.input-video.video-seek-offset[offset-seconds].seek-offset-seconds', 'value' => $offset);
+        $options[] = array('name' => 'video-transcode.input-video.seek-offset', 'value' => 'seconds');
+        $options[] = array('name' => 'video-transcode.input-video.seek-offset[seconds].seconds', 'value' => $offset);
 
         $job = $postData['job'];
         foreach ($job['tasks'] as &$task) {
@@ -105,18 +105,16 @@ class Payload
 
     /**
      * @param $filename
-     * @param $duration
-     * @param $stills
      * @return array
      */
-    public function addStills($filename, $duration, $stills)
+    public function addStills($filename)
     {
         $postData = $this->getPostData();
         $files = $postData['files'];
         $job = $postData['job'];
         $fileNames = array();
 
-        for ($i = 0; $i < $stills; $i++) {
+        for ($i = 0; $i < 5; $i++) {
 
             $stillFilename = str_replace('.' . pathinfo(parse_url($filename, PHP_URL_PATH), PATHINFO_EXTENSION), '_' . $i . '.jpg', $filename);
             $fileNames[] = $stillFilename;
@@ -138,8 +136,8 @@ class Payload
             $action= array();
             $action['actionType'] = 'generate-still';
             $action['preset'] = 'Default Still Preset';
-            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset', 'value' => 'percentage');
-            $action['options'][] = array('name' => 'generate-still.input-video.still-seek-offset[percentage].percentage', 'value' => 10 + ($i * 20));
+            $action['options'][] = array('name' => 'generate-still.input-video.seek-offset', 'value' => 'percentage');
+            $action['options'][] = array('name' => 'generate-still.input-video.seek-offset[percentage].percentage', 'value' => 10 + ($i * 20));
 
             $filesRequirements= array();
             $filesRequirements[] = array('file_requirement_id' => 3, 'ref' => $files[0]['id']);
