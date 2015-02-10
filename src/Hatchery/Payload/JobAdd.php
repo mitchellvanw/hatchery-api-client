@@ -9,86 +9,33 @@ class JobAdd extends Payload
     {
         parent::__construct($url);
 
-        $files= array();
-        $tasks= array();
-
-        //create acquire file ref
-        $acquireFileRef = $this->uuid();
-        //create acquire task ref
-        $acquireTaskRef = $this->uuid();
-        //add input file
-        $files[] = array('id' => $acquireFileRef, 'url' => $ftpIn);
-        //add task
-        $acquireTask['id'] = $acquireTaskRef;
-        $acquireTask['type'] = 'acquire';
-        //add file reference
-        $file['ref'] = $acquireFileRef;
-        $acquireTask['file']  = $file;
-        //add task to tasks
-        $tasks[] = $acquireTask;
-
-        //create publish file ref
-        $publishFileRef = $this->uuid();
-        //create publish task ref
-        $publishTaskRef = $this->uuid();
-        //add output file
-        $files[] = array('id' => $publishFileRef, 'url' => $ftpOut);
-        //add task
-        $publishTask['id'] = $publishTaskRef;
-        $publishTask['type'] = 'publish';
-        //add file reference
-        $file['ref'] = $publishFileRef;
-        $publishTask['file'] = $file;
-
-        $transcodeTaskRef = $this->uuid();
-        $transcodeTask['id'] = $transcodeTaskRef;
-        $transcodeTask['type'] = 'transcode';
-        $transcodeTask['depends_on'][] = $acquireTaskRef;
-
-        $action['actionType']  = 'video-transcode';
-        $action['preset'] = $preset;
-        $action['options']= array();
-
-        $filesRequirements= array();
-        $filesRequirements[] = array('file_requirement_id' => 1, 'ref' => $acquireFileRef);
-        $filesRequirements[] = array('file_requirement_id' => 2, 'ref' => $publishFileRef);
-
-        $action['files'] = $filesRequirements;
-
-        $transcodeTask['actions'][] = $action;
-
-        $tasks[] = $publishTask;
-        $tasks[] = $transcodeTask;
-        $job= array();
-        $job['tasks'] = $tasks;
+        $output = array();
+        $output['url'] = $ftpOut;
 
 
-        $this->setPostData('job', $job);
-        $this->setPostData('files', $files);
+        $this->data['input'] = $ftpIn;
+        $this->data['output'] = $output;
     }
 
-    static function uuid() {
-        return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            // 32 bits for "time_low"
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ),
-
-            // 16 bits for "time_mid"
-            mt_rand( 0, 0xffff ),
-
-            // 16 bits for "time_hi_and_version",
-            // four most significant bits holds version number 4
-            mt_rand( 0, 0x0fff ) | 0x4000,
-
-            // 16 bits, 8 bits for "clk_seq_hi_res",
-            // 8 bits for "clk_seq_low",
-            // two most significant bits holds zero and one for variant DCE1.1
-            mt_rand( 0, 0x3fff ) | 0x8000,
-
-            // 48 bits for "node"
-            mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff ), mt_rand( 0, 0xffff )
-        );
+    public function addOffset($offset)
+    {
+        $this->data['output']['seek_offset'] = $offset;
     }
 
+    public function addDuration($duration)
+    {
+        $this->data['output']['output_length'] = $duration;
+    }
 
+    public function addStills($directory, $filename, $amount, $format, $width, $height)
+    {
+        $stills = array();
+        $stills['base_url'] = $directory;
+        $stills['format'] = $format;
+        $stills['amount'] = $amount;
+        $stills['filename'] = $filename;
+
+        $this->data['output']['stills'] = $stills;
+    }
 
 }

@@ -3,7 +3,9 @@
 namespace Hatchery;
 
 use Hatchery\Connection\Curl\CurlPost;
-use Hatchery\Payload\Payload as PayloadItem;
+use Hatchery\Payload\JobAdd;
+use Hatchery\Payload\JobStatus;
+use Hatchery\Payload\Payload;
 
 class Client {
 
@@ -17,15 +19,15 @@ class Client {
         $this->interface = new CurlPost();
     }
 
-    public function createJobAddPayload($preset, $ftpIn, $ftpOut) {
-        return new Payload\JobAdd($this->baseLink . '/api/jobs/', $preset, $ftpIn, $ftpOut);
+    public function createJobAddPayload($preset, $uriInput, $uriOutput) {
+        return new JobAdd($this->baseLink . '/api/v2/jobs/', $preset, $uriInput, $uriOutput);
     }
 
     public function createJobStatusPayload($identifier) {
-        return new Payload\JobStatus($this->baseLink, $identifier);
+        return new JobStatus($this->baseLink, $identifier);
     }
 
-    public function sendPayload(PayloadItem $payload) {
+    public function sendPayload(Payload $payload) {
         $payload->setHeader('x-auth-token', $this->apiKey);
         $payload->setHeader('Content-Type', 'application/json');
         /* @var $response \Hatchery\Connection\ResponseInterface */
