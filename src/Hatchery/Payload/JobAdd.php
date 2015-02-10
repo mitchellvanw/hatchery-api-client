@@ -11,6 +11,7 @@ class JobAdd extends Payload
 
         $output = array();
         $output['url'] = $ftpOut;
+        $output['preset'] = $preset;
 
 
         $this->data['input'] = $ftpIn;
