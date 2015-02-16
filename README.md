@@ -19,6 +19,7 @@ We're assuming you've installed this package through Composer and is autoload.
 
 ```php
 use Hatchery\Payload\JobAdd;
+use Hatchery\Connection\Curl\CurlPost;
 
 $client = new Hatchery\Client(new CurlPost('api_url', 'api_key'));
 $client->sendPayload(new JobAdd('preset', 'ftp-in', 'ftp-out'));
