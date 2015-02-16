@@ -10,5 +10,9 @@ class ResponseException extends \Exception {
         parent::__construct($message);
         $this->response = $response;
     }
+
+    public function getResponse() {
+        return $this->response;
+    }
 }
 

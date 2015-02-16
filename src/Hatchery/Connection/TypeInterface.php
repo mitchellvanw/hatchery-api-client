@@ -4,8 +4,7 @@ namespace Hatchery\Connection;
 
 use Hatchery\Payload\Payload;
 
-interface TypeInterface
-{
+interface TypeInterface {
 
     public function sendPayload(Payload $payload);
 }

@@ -6,7 +6,6 @@ use Exception;
 use Hatchery\Connection\Curl\CurlPost;
 use Hatchery\Connection\ResponseException;
 use Hatchery\Connection\ResponseInterface;
-use Hatchery\Payload\JobStatus;
 use Hatchery\Payload\Payload;
 
 class Client {
@@ -19,10 +18,6 @@ class Client {
         $this->baseLink = rtrim($apiUrl, '/');
         $this->apiKey = $apiKey;
         $this->interface = new CurlPost;
-    }
-
-    public function createJobStatusPayload($identifier) {
-        return new JobStatus($this->baseLink, $identifier);
     }
 
     public function sendPayload(Payload $payload) {

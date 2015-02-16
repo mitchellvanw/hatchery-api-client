@@ -2,13 +2,27 @@
 
 namespace Hatchery\Payload;
 
-class JobStatus extends Payload
-{
+class JobStatus implements Payload {
 
-    public function __construct($url, $identifier)
-    {
-        parent::__construct($url . $identifier);
-        $this->setMethod('get');
+    private $identifier;
+
+    public function __construct($identifier) {
+        $this->identifier = $identifier;
     }
 
+    public function getVerb() {
+        return 'get';
+    }
+
+    public function getUri() {
+        return "/{$this->identifier}";
+    }
+
+    public function getHeaders() {
+        return ['Content-Type' => 'application/json'];
+    }
+
+    public function getData() {
+        return array();
+    }
 }
