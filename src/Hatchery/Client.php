@@ -5,7 +5,7 @@ namespace Hatchery;
 use Exception;
 use Hatchery\Connection\Curl\CurlPost;
 use Hatchery\Connection\ResponseException;
-use Hatchery\Connection\ResponseInterface;
+use Hatchery\Connection\Response;
 use Hatchery\Payload\Payload;
 
 class Client {
@@ -22,7 +22,7 @@ class Client {
 
     public function sendPayload(Payload $payload) {
         $payload->setHeader('x-auth-token', $this->apiKey);
-        /* @var $response ResponseInterface */
+        /* @var $response Response */
         $response = $this->interface->sendPayload($payload);
         try {
             if ($this->isPayloadSuccessful($response)) {
@@ -35,7 +35,7 @@ class Client {
         }
     }
 
-    private function isPayloadSuccessful(ResponseInterface $response) {
+    private function isPayloadSuccessful(Response $response) {
         return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300;
     }
 }
