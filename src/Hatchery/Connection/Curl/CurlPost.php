@@ -11,7 +11,7 @@ class CurlPost implements TypeInterface {
     private $apiKey;
 
     public function __construct($baseUrl, $apiKey) {
-        $this->baseUrl = $baseUrl;
+        $this->baseUrl = rtrim($baseUrl, '/');
         $this->apiKey = $apiKey;
     }
 

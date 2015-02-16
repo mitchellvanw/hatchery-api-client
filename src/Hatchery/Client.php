@@ -3,18 +3,17 @@
 namespace Hatchery;
 
 use Exception;
-use Hatchery\Connection\Curl\CurlPost;
 use Hatchery\Connection\ResponseException;
 use Hatchery\Connection\Response;
+use Hatchery\Connection\TypeInterface;
 use Hatchery\Payload\Payload;
 
 class Client {
 
     private $interface;
 
-    public function __construct($apiUrl, $apiKey) {
-        $baseLink = rtrim($apiUrl, '/');
-        $this->interface = new CurlPost($baseLink, $apiKey);
+    public function __construct(TypeInterface $interface) {
+        $this->interface = $interface;
     }
 
     public function sendPayload(Payload $payload) {
