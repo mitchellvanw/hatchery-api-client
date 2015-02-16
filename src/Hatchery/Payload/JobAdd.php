@@ -25,14 +25,14 @@ class JobAdd implements Payload {
         $this->duration = $duration;
     }
 
-    public function addStills($directory, $filename, $amount, $format, $width, $height) {
+    public function addStills(Stills $stills) {
         $this->stills = array(
-            'base_url' => $directory,
-            'format' => $format,
-            'amount' => $amount,
-            'filename' => $filename,
-            'width' => $width,
-            'height' => $height
+            'base_url' => $stills->getDirectory(),
+            'format' => $stills->getFormat(),
+            'amount' => $stills->getAmount(),
+            'filename' => $stills->getFilename(),
+            'width' => $stills->getWidth(),
+            'height' => $stills->getHeight()
         );
     }
 
