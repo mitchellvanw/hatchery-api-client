@@ -2,41 +2,65 @@
 
 namespace Hatchery\Payload;
 
-class JobAdd extends Payload
-{
+class JobAdd implements Payload {
 
-    public function __construct($url, $preset, $ftpIn, $ftpOut)
-    {
-        parent::__construct($url);
+    private $preset;
+    private $ftpIn;
+    private $ftpOut;
+    private $stills = [];
+    private $seekOffset = 0;
+    private $duration;
 
-        $output = array();
-        $output['url'] = $ftpOut;
-        $output['preset'] = $preset;
-
-
-        $this->data['input'] = $ftpIn;
-        $this->data['output'] = $output;
+    public function __construct($preset, $ftpIn, $ftpOut) {
+        $this->preset = $preset;
+        $this->ftpIn = $ftpIn;
+        $this->ftpOut = $ftpOut;
     }
 
-    public function addOffset($offset)
-    {
-        $this->data['output']['seek_offset'] = $offset;
+    public function addOffset($seekOffset) {
+        $this->seekOffset = $seekOffset;
     }
 
-    public function addDuration($duration)
-    {
-        $this->data['output']['output_length'] = $duration;
+    public function addDuration($duration) {
+        $this->duration = $duration;
     }
 
-    public function addStills($directory, $filename, $amount, $format, $width, $height)
-    {
-        $stills = array();
-        $stills['base_url'] = $directory;
-        $stills['format'] = $format;
-        $stills['amount'] = $amount;
-        $stills['filename'] = $filename;
-
-        $this->data['output']['stills'] = $stills;
+    public function addStills($directory, $filename, $amount, $format, $width, $height) {
+        $this->stills = [
+            'base_url' => $directory,
+            'format' => $format,
+            'amount' => $amount,
+            'filename' => $filename,
+            'width' => $width,
+            'height' => $height,
+        ];
     }
 
+    public function getVerb() {
+        return 'POST';
+    }
+
+    public function getUri() {
+        return '/api/v2/jobs/';
+    }
+
+    public function getHeaders() {
+        return ['Content-Type' => 'application/json'];
+    }
+
+    public function getData() {
+        $data = [
+            'input' => $this->ftpIn,
+            'output' => [
+                'preset' => $this->preset,
+                'url' => $this->ftpOut,
+                'seek_offset' => $this->seekOffset,
+                'stills' => $this->stills
+            ]
+        ];
+        if ($this->duration) {
+            $data['output']['output_length'] = $this->duration;
+        }
+        return $data;
+    }
 }

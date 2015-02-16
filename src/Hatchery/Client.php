@@ -13,10 +13,10 @@ class Client {
     private $interface;
     private $apiKey;
 
-    public function __construct($api, $apiKey) {
-        $this->baseLink = rtrim($api, '/');
+    public function __construct($apiUrl, $apiKey) {
+        $this->baseLink = rtrim($apiUrl, '/');
         $this->apiKey = $apiKey;
-        $this->interface = new CurlPost();
+        $this->interface = new CurlPost;
     }
 
     public function createJobAddPayload($preset, $uriInput, $uriOutput) {
@@ -33,9 +33,9 @@ class Client {
         /* @var $response \Hatchery\Connection\ResponseInterface */
         $response = $this->interface->sendPayload($payload);
         try {
-            
+
             if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
-                
+
                 return $response;
             } else {
 

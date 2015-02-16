@@ -18,9 +18,10 @@ This is the PHP SDK for Hatchery Video Transcoding API.
 We're assuming you've installed this package through Composer and is autoload.
 
 ```php
+use Hatchery\Payload\JobAdd;
+
 $client = new Hatchery\Client('api_url', 'api_key');
-$payload = $client->createJobAddPayload('preset', 'ftp-in', 'ftp-out');
-$client->sendPayload($payload);
+$client->sendPayload(new JobAdd('preset', 'ftp-in', 'ftp-out'));
 ```
 
 ### Requirements
