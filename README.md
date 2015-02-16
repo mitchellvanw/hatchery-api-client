@@ -1,13 +1,42 @@
-DESCRIPTION
-===========
-This is the API client for Hatchery Video Transcoding API. Use this to simplify the use of the API in PHP.
+# Hatchery Video Transcoding
 
-Example
-=======
+[![Latest Stable Version](https://poser.pugx.org/issetbv/hatchery-api-client/version.png)](https://packagist.org/packages/issetbv/hatchery-api-client)
+[![License](https://poser.pugx.org/issetbv/hatchery-api-client/license.png)](https://packagist.org/packages/issetbv/hatchery-api-client)
+[![Total Downloads](https://poser.pugx.org/issetbv/hatchery-api-client/downloads.png)](https://packagist.org/packages/issetbv/hatchery-api-client)
 
-    <?php
+This is the PHP SDK for Hatchery Video Transcoding API.
 
-    include '../src/Hatchery/Autoloader.php';
-    $client  = new Hatchery\Client('api_url', 'api_key');
-    $payload = $client->createJobAddPayload('preset', 'ftp-in', 'ftp-out');
-    $client->sendPayload($payload);
+### Table of Contents
+
+- [Quick and Dirty](#quick-and-dirty)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [License](#license)
+
+### Quick and Dirty
+
+We're assuming you've installed this package through Composer and is autoload.
+
+```php
+$client = new Hatchery\Client('api_url', 'api_key');
+$payload = $client->createJobAddPayload('preset', 'ftp-in', 'ftp-out');
+$client->sendPayload($payload);
+```
+
+### Requirements
+
+- PHP 5.3
+
+### Installation
+
+**Composer**
+
+Run the following to include this via Composer
+
+```shell
+composer require issetbv/hatchery-api-client
+```
+
+### License
+
+This package is licensed under the [MIT license](https://github.com/issetbv/hatchery-api-client/blob/master/LICENSE).

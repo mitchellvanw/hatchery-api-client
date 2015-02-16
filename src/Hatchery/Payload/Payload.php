@@ -2,7 +2,7 @@
 
 namespace Hatchery\Payload;
 
-class Payload
+abstract class Payload
 {
 
     protected $data = array();

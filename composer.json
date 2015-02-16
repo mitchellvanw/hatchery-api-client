@@ -1,7 +1,7 @@
 {
     "name": "issetbv/hatchery-api-client",
     "type": "library",
-    "description": "Hatchery API client for PHP",
+    "description": "PHP SDK for the Hatchery Video Transcoding API",
     "authors": [
     {
         "name": "Bart Malestein",
@@ -14,7 +14,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Hatchery": "src"
+            "Hatchery": "src/"
         }
     }
 }
