@@ -5,6 +5,7 @@ namespace Hatchery;
 use Exception;
 use Hatchery\Connection\Curl\CurlPost;
 use Hatchery\Connection\ResponseException;
+use Hatchery\Connection\ResponseInterface;
 use Hatchery\Payload\JobStatus;
 use Hatchery\Payload\Payload;
 
@@ -26,23 +27,20 @@ class Client {
 
     public function sendPayload(Payload $payload) {
         $payload->setHeader('x-auth-token', $this->apiKey);
-        $payload->setHeader('Content-Type', 'application/json');
-        /* @var $response \Hatchery\Connection\ResponseInterface */
+        /* @var $response ResponseInterface */
         $response = $this->interface->sendPayload($payload);
         try {
-
-            if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
-
+            if ($this->isPayloadSuccessful($response)) {
                 return $response;
             } else {
-
-                $e = new Connection\ResponseException(sprintf('[%s]: Send failed: [%s]', $response->getStatusCode(), $response->getContent()));
-                $e->setResponse($response);
-                throw $e;
+                throw new ResponseException("Payload failed with status code [{$response->getStatusCode()}] and content [{$response->getContent()}]", $response);
             }
         } catch (Exception $e) {
             throw new ResponseException($e->getMessage(), $response);
         }
     }
 
+    private function isPayloadSuccessful(ResponseInterface $response) {
+        return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300;
+    }
 }
