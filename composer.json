@@ -1,6 +1,7 @@
 {
     "name": "issetbv/hatchery-api-client",
     "type": "library",
+    "license": "MIT",
     "description": "PHP SDK for the Hatchery Video Transcoding API",
     "authors": [
     {
