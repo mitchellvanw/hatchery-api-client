@@ -2,20 +2,13 @@
 
 namespace Hatchery\Connection;
 
-class ResponseException extends \Exception
-{
+class ResponseException extends \Exception {
 
-    protected $response;
+    private $response;
 
-    public function setResponse(ResponseInterface $response)
-    {
+    public function __construct($message = '', ResponseInterface $response) {
+        parent::__construct($message);
         $this->response = $response;
     }
-
-    public function getResponse()
-    {
-        return $this->response;
-    }
-
 }
 

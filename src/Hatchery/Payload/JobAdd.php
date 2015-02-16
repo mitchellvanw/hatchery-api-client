@@ -7,7 +7,7 @@ class JobAdd implements Payload {
     private $preset;
     private $ftpIn;
     private $ftpOut;
-    private $stills = [];
+    private $stills = array();
     private $seekOffset = 0;
     private $duration;
 
@@ -26,14 +26,14 @@ class JobAdd implements Payload {
     }
 
     public function addStills($directory, $filename, $amount, $format, $width, $height) {
-        $this->stills = [
+        $this->stills = array(
             'base_url' => $directory,
             'format' => $format,
             'amount' => $amount,
             'filename' => $filename,
             'width' => $width,
-            'height' => $height,
-        ];
+            'height' => $height
+        );
     }
 
     public function getVerb() {
@@ -45,19 +45,19 @@ class JobAdd implements Payload {
     }
 
     public function getHeaders() {
-        return ['Content-Type' => 'application/json'];
+        return array('Content-Type' => 'application/json');
     }
 
     public function getData() {
-        $data = [
+        $data = array(
             'input' => $this->ftpIn,
-            'output' => [
+            'output' => array(
                 'preset' => $this->preset,
                 'url' => $this->ftpOut,
                 'seek_offset' => $this->seekOffset,
                 'stills' => $this->stills
-            ]
-        ];
+            )
+        );
         if ($this->duration) {
             $data['output']['output_length'] = $this->duration;
         }

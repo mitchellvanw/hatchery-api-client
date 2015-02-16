@@ -2,8 +2,9 @@
 
 namespace Hatchery;
 
+use Exception;
 use Hatchery\Connection\Curl\CurlPost;
-use Hatchery\Payload\JobAdd;
+use Hatchery\Connection\ResponseException;
 use Hatchery\Payload\JobStatus;
 use Hatchery\Payload\Payload;
 
@@ -17,10 +18,6 @@ class Client {
         $this->baseLink = rtrim($apiUrl, '/');
         $this->apiKey = $apiKey;
         $this->interface = new CurlPost;
-    }
-
-    public function createJobAddPayload($preset, $uriInput, $uriOutput) {
-        return new JobAdd($this->baseLink . '/api/v2/jobs/', $preset, $uriInput, $uriOutput);
     }
 
     public function createJobStatusPayload($identifier) {
@@ -39,14 +36,12 @@ class Client {
                 return $response;
             } else {
 
-                $ex = new Connection\ResponseException(sprintf('[%s]: Send failed: [%s]', $response->getStatusCode(), $response->getContent()));
-                $ex->setResponse($response);
-                throw $ex;
+                $e = new Connection\ResponseException(sprintf('[%s]: Send failed: [%s]', $response->getStatusCode(), $response->getContent()));
+                $e->setResponse($response);
+                throw $e;
             }
-        } catch (\Exception $ex) {
-            $ex = new Connection\ResponseException($ex->getMessage());
-            $ex->setResponse($response);
-            throw $ex;
+        } catch (Exception $e) {
+            throw new ResponseException($e->getMessage(), $response);
         }
     }
 
