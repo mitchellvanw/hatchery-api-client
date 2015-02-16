@@ -10,18 +10,14 @@ use Hatchery\Payload\Payload;
 
 class Client {
 
-    private $baseLink;
     private $interface;
-    private $apiKey;
 
     public function __construct($apiUrl, $apiKey) {
-        $this->baseLink = rtrim($apiUrl, '/');
-        $this->apiKey = $apiKey;
-        $this->interface = new CurlPost;
+        $baseLink = rtrim($apiUrl, '/');
+        $this->interface = new CurlPost($baseLink, $apiKey);
     }
 
     public function sendPayload(Payload $payload) {
-        $payload->setHeader('x-auth-token', $this->apiKey);
         /* @var $response Response */
         $response = $this->interface->sendPayload($payload);
         try {
